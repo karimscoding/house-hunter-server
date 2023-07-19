@@ -5,6 +5,7 @@ require("dotenv").config();
 const authRouters = require("./routes/auth");
 const houseRouters = require("./routes/houseRoutes");
 const authMiddleware = require("./middleware/authMiddleware");
+const { secretKey } = require('./config');
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(cors());
 
 // routes
 app.use("/api", authRouters);
-app.use("/api", authMiddleware, houseRouters);
+app.use("/api", houseRouters);
 
 const uri =
   "mongodb+srv://rejaulkarim:wFtOtoToKiZ1moO6@cluster0.lqmni67.mongodb.net/";
