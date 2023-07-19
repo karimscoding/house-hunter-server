@@ -1,44 +1,33 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
 require("dotenv").config();
-const authRouters = require("./routes/auth");
-const houseRouters = require("./routes/houseRoutes");
-const authMiddleware = require("./middleware/authMiddleware");
-const { secretKey } = require('./config');
+
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+
+const port = process.env.PORT || 5000;
+const uri = process.env.MONGODB_ATLAS_URL;
 
 const app = express();
-
-// middleware
 app.use(express.json());
-app.use(cors());
-
-// routes
-app.use("/api", authRouters);
-app.use("/api", houseRouters);
-
-const uri =
-  "mongodb+srv://rejaulkarim:wFtOtoToKiZ1moO6@cluster0.lqmni67.mongodb.net/";
-
-//connect to mongodb atlas
-mongoose.connect(uri, {
-  useUnifiedTopology: true,
-});
-
-// Check database connection status
-const db = mongoose.connection;
-db.on("error", (error) => {
-  console.error("MongoDB connection error:", error);
-});
-db.once("open", () => {
-  console.log("Connected to MongoDB Atlas");
-});
+app.use(
+  cors({
+    credentials: true,
+  })
+);
 
 app.get("/", (req, res) => {
-  res.status(201).json({ message: "Server is running" });
+  res.status(200).json({ message: "Server is up and running" });
 });
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`server is running on port: ${PORT}`);
-});
+mongoose
+  .connect(uri, {
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server running on port${port}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error.message);
+  });
