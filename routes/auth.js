@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const secretKey = process.env.JWT_SECRET
+const secretKey = process.env.JWT_SECRET;
 
 // users registrations
 router.post("/register", async (req, res) => {
@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
     // hashed the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // create a new user document 
+    // create a new user document
     const newUser = new User({
       fullName,
       role,
@@ -46,23 +46,30 @@ router.post("/login", async (req, res) => {
     // find the user by email
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "Authentication failed" });
+      return res.status(401).json({ message: "Email and password does not match" });
     }
 
     // compare the hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if(!isPasswordValid){
-        return res.status(401).json({message:"Password does not matched"})
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Password does not matched" });
     }
 
     // generate a JWT token
-    const token = jwt.sign({userId:user._id}, secretKey, {expiresIn: "1h"})
-    res.json({token})
-
+    const token = jwt.sign({ userId: user._id }, secretKey, {
+      expiresIn: "1h",
+    });
+    res.json({ token });
   } catch (error) {
-    console.error(error)
-    res.status(500).json({message: "internal server error"})
+    console.error(error);
+    res.status(500).json({ message: "internal server error" });
   }
 });
 
-module.exports = router
+// logout user
+router.post("/logout", (req, res) => {
+  res.clearCookie("jwtToken").json({ message: "Logged out successfully" });
+});
+
+
+module.exports = router;
