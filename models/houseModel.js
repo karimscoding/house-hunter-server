@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const houseSchema = new MongooseError.Schema(
+const houseSchema = new mongoose.Schema(
   {
     owner: {
       type: mongoose.Schema.Types.ObjectId,

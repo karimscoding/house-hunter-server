@@ -4,9 +4,9 @@ const House = require("../models/houseModel");
 
 router.post("/houses", async (req, res) => {
   try {
-    //TODO add authentications middleware
+    // TODO: add authentications middleware
 
-    const userId = req.user._id;
+    // const userId = req.user.id;
     const {
       name,
       address,
@@ -39,7 +39,7 @@ router.post("/houses", async (req, res) => {
 
     // create a new house document
     const newHouse = new House({
-      owner: userId,
+      // owner: userId,
       address,
       city,
       bedrooms,
@@ -59,3 +59,6 @@ router.post("/houses", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+module.exports = router;
