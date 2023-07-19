@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const secretKey = process.env.MY_SECRET_KEY
 
 // users registrations
 router.post("/register", async (req, res) => {
@@ -51,11 +52,11 @@ router.post("/login", async (req, res) => {
     // compare the hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if(!isPasswordValid){
-        return res.status(401).json({message:"Authentication failed"})
+        return res.status(401).json({message:"Password does not matched"})
     }
 
     // generate a JWT token
-    const token = jwt.sign({userId:user._id}, "your_secret_key", {expiresIn: "1h"})
+    const token = jwt.sign({userId:user._id}, secretKey, {expiresIn: "1h"})
     res.json({token})
 
   } catch (error) {
