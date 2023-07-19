@@ -28,10 +28,41 @@ const houseSchema = new MongooseError.Schema(
       type: Number,
       required: true,
     },
+    roomSize: {
+      type: Number,
+      required: true,
+    },
+    picture: {
+      type: String,
+      required: true,
+    },
+    availabilityDate: {
+      type: Date,
+      required: true,
+    },
+    rentPerMonth: {
+      type: Number,
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (value) {
+          // Regex to validate Bangladeshi phone number format (e.g., +8801XXXXXXXXX)
+          return /^(\+8801)[0-9]{9}$/.test(value);
+        },
+        message: "Please provide a valid Bangladeshi phone number",
+      },
+    },
+    description: {
+      type: String,
+      required: true,
+    },
   },
   { timeTamps: true }
 );
 
-const House = mongoose.model("House", houseSchema)
+const House = mongoose.model("House", houseSchema);
 
-module.exports = House
+module.exports = House;
