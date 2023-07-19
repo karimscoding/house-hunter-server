@@ -4,9 +4,14 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+
+const userRoutes = require("./routes/user.route")
+
+// variables
 const port = process.env.PORT || 5000;
 const uri = process.env.MONGODB_ATLAS_URL;
 
+// express app
 const app = express();
 app.use(express.json());
 app.use(
@@ -15,10 +20,15 @@ app.use(
   })
 );
 
+// test api
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is up and running" });
 });
 
+// bypassed api
+app.use("/api/user", userRoutes)
+
+// db
 mongoose
   .connect(uri, {
     useUnifiedTopology: true,
