@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
@@ -8,7 +9,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     phone: {
       type: String,
       required: true,
@@ -34,25 +34,19 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// signup
-userSchema.statics.signup = async function (
-  name,
-  email,
-  password,
-  phone,
-  role
-) {
+// Signup
+userSchema.statics.signup = async function (name, email, password, phone, role) {
   if (!name || !email || !password || !phone || !role) {
-    throw new Error("All field are required");
+    throw new Error("All fields are required");
   }
 
   if (!validator.isEmail(email)) {
     throw new Error("Invalid email");
   }
 
-  if ((!validator, isStrongPassword(password))) {
+  if (!validator.isStrongPassword(password)) {
     throw new Error(
-      "Password is not strong (must contain 8+ chars, uppercase, lowercase, number, and symbol"
+      "Password is not strong (must contain 6+ chars, uppercase, lowercase, number, and symbol)"
     );
   }
 
@@ -60,35 +54,51 @@ userSchema.statics.signup = async function (
   const hashPass = await bcrypt.hash(password, salt);
 
   const user = await this.create({
-    fullName,
+    name,
     email,
     password: hashPass,
-    phoneNumber,
+    phone,
     role,
   });
-
-  return user;
+ // Generate JWT token
+ const token = user.generateToken();
+  return {user, token};
 };
+
+
+// Generate JWT token
+userSchema.methods.generateToken = function () {
+  const tokenPayload = {
+    userId: this._id,
+    role: this.role,
+  };
+
+  const JWT_SECRET_KEY = process.env.JWT_SECRET; // Replace with your secret key for signing JWT tokens
+
+  return jwt.sign(tokenPayload, JWT_SECRET_KEY, { expiresIn: "1h" });
+};
+
 
 // login
 userSchema.statics.login = async function (email, password) {
   if (!email || !password) {
-    throw new Error("All field are required");
+    throw new Error("All fields are required");
   }
 
   const user = await this.findOne({ email });
 
   if (!user) {
-    throw new Error("Incorrect email and password ");
+    throw new Error("Incorrect email and password");
   }
 
   const match = await bcrypt.compare(password, user.password);
 
   if (!match) {
-    throw new Error("Incorrect email and password ");
+    throw new Error("Incorrect email and password");
   }
 
   return user;
 };
+
 
 module.exports = mongoose.model("User", userSchema);
