@@ -1,27 +1,21 @@
 const jwt = require("jsonwebtoken");
-// const secretKey = process.env.JWT_SECRET;
-const { secretKey } = require('./../config');
+const  SECRET_KEY  = process.env.JWT_SECRET
 
 const authMiddleware = (req, res, next) => {
-  const token = req.header("Authorization");
-  console.log("Token header:", token);
+  // Get the token from the request header
+  const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    console.log("❌Authorization token not found"); 
-
     return res.status(401).json({ message: "Authorization token not found" });
   }
 
   try {
-    const decoded = jwt.verify(token, secretKey);
-    console.log("Decoded token", decoded)
-
-    req.userId = decoded.userId;
-    req.role = decoded.role;
-
+    // Verify the token and extract the user ID
+    const decodedToken = jwt.verify(token, SECRET_KEY);
+    req.userId = decodedToken.userId; 
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Invalid Token" });
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 

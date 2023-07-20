@@ -4,10 +4,12 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-
-const userRoutes = require("./routes/user.route")
-const addHouseRoutes = require ("./routes/add.house.route");
-const getAllHouses = require ("./routes/add.house.route");
+const userRoutes = require("./routes/user.route");
+const addHouseRoutes = require("./routes/add.house.route");
+const getAllHouses = require("./routes/add.house.route");
+const getHousesByOwner = require("./routes/add.house.route");
+const getHouseById = require("./routes/add.house.route");
+const updateHouseById = require("./routes/add.house.route");
 
 // variables
 const port = process.env.PORT || 5000;
@@ -28,7 +30,12 @@ app.get("/", (req, res) => {
 });
 
 // bypassed api
-app.use("/api/user", userRoutes, addHouseRoutes, getAllHouses)
+app.use("/api/user", userRoutes);
+app.use("/api/user", addHouseRoutes);
+app.use("/api/user", getAllHouses);
+app.use("/api/user", getHousesByOwner);
+app.use("/api/user", getHouseById);
+app.use("/api/user", updateHouseById);
 
 // db
 mongoose
