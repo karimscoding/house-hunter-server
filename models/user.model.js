@@ -71,6 +71,8 @@ userSchema.methods.generateToken = function () {
   const tokenPayload = {
     userId: this._id,
     role: this.role,
+    name:this.name,
+    email:this.email
   };
 
   const JWT_SECRET_KEY = process.env.JWT_SECRET; // Replace with your secret key for signing JWT tokens

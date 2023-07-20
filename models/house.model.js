@@ -44,7 +44,7 @@ const houseSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    phoneNumber: {
+    phone: {
       type: String,
       required: true,
       validate: {
@@ -54,10 +54,6 @@ const houseSchema = new mongoose.Schema(
         },
         message: "Please provide a valid Bangladeshi phone number",
       },
-    },
-    description: {
-      type: String,
-      required: true,
     },
   },
   { timeTamps: true }
