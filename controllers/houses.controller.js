@@ -1,6 +1,5 @@
 const mongoose = require ("mongoose")
 const House = require("../models/house.model");
-const User = require ("../models/user.model")
 
 const addHouse = async (req, res) => {
   //   Check if the user is a "house owner"
@@ -9,9 +8,6 @@ const addHouse = async (req, res) => {
   //       .status(403)
   //       .json({ message: "You are not authorized to add a house" });
   //   }
-
- 
-
 
   try {
     const {
@@ -77,4 +73,15 @@ const addHouse = async (req, res) => {
   }
 };
 
-module.exports = addHouse;
+// get all house
+const getAllHouses = async (req, res) => {
+  try {
+    const houses = await House.find();
+    res.status(200).json(houses);
+  } catch (error) {
+    console.log("Error fetching houses", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = {addHouse, getAllHouses};
