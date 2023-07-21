@@ -131,4 +131,21 @@ const getHouseById = async (req, res) => {
   }
 };
 
-module.exports = { addHouse, getAllHouses, getHousesByOwner, getHouseById, updateHouse };
+// Delete a house by its ID
+const deleteHouse = async (req, res) => {
+  try {
+    const houseId = req.params.id;
+    const deletedHouse = await House.findByIdAndDelete(houseId);
+
+    if (!deletedHouse) {
+      return res.status(404).json({ message: "House not found" });
+    }
+
+    res.status(200).json({ message: "House deleted successfully" });
+  } catch (error) {
+    console.log("Error deleting house", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { addHouse, getAllHouses, getHousesByOwner, getHouseById, updateHouse, deleteHouse };

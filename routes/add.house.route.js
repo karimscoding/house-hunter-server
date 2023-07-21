@@ -5,6 +5,7 @@ const {
   getHousesByOwner,
   getHouseById,
   updateHouse,
+  deleteHouse
 } = require("../controllers/houses.controller");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -22,5 +23,8 @@ router.get("/houses", getHousesByOwner);
 router.get("/houses/:id", getHouseById);
 
 router.patch("/houses/:id", updateHouse);
+
+// delete a house by its ID
+router.delete("/houses/:id", deleteHouse);
 
 module.exports = router;
