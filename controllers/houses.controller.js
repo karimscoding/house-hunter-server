@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const House = require("../models/house.model");
 
 const addHouse = async (req, res) => {

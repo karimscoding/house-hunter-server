@@ -11,6 +11,8 @@ const getHousesByOwner = require("./routes/add.house.route");
 const getHouseById = require("./routes/add.house.route");
 const updateHouseById = require("./routes/add.house.route");
 const deleteHouseById = require("./routes/add.house.route");
+const bookings = require("./routes/booking.route")
+const getUserBookings = require("./routes/booking.route")
 
 // variables
 const port = process.env.PORT || 5000;
@@ -38,6 +40,11 @@ app.use("/api/user", getHousesByOwner);
 app.use("/api/user", getHouseById);
 app.use("/api/user", updateHouseById);
 app.use("/api/user", deleteHouseById);
+
+app.use("/api/user", bookings);
+
+// orders
+app.use("/api/user", getUserBookings);
 
 // db
 mongoose
