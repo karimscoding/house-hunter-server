@@ -14,12 +14,10 @@ const createUser = async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Password must contain 6+ chars, uppercase, lowercase, number, symbol",
-        });
+      return res.status(400).json({
+        message:
+          "Password must contain 6+ chars, uppercase, lowercase, number, symbol",
+      });
     }
     const user = await User.signup(name, email, password, phone, role);
     res.status(200).json(user);
@@ -40,7 +38,7 @@ const loginUser = async (req, res) => {
     const user = await User.login(email, password);
 
     const token = jwt.sign(
-      { userId: user._id, role: user.role },
+      { userId: user._id, role: user.role, name: user.name, email: user.email },
       JWT_SECRET_KEY,
       {
         expiresIn: "1h",
@@ -69,4 +67,4 @@ const logoutUser = async (req, res) => {
   return res.status(200).json({ message: "Logout successful" });
 };
 
-module.exports = { createUser, loginUser, logoutUser};
+module.exports = { createUser, loginUser, logoutUser };
