@@ -84,11 +84,10 @@ const getAllHouses = async (req, res) => {
 // get house
 const getHousesByOwner = async (req, res) => {
   try {
-    const ownerId = req.user;
-    console.log(ownerId);
-    console.log(ownerId);
+    const ownerId = req.userId;
+    console.log("owner",ownerId);
 
-    const houses = await House.find();
+    const houses = await House.find({owner: ownerId});
     res.status(200).json(houses);
   } catch (error) {
     console.log("Error fetching houses", error);

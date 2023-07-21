@@ -75,9 +75,9 @@ userSchema.methods.generateToken = function () {
     email:this.email
   };
 
-  const JWT_SECRET_KEY = process.env.JWT_SECRET; // Replace with your secret key for signing JWT tokens
+  const JWT_SECRET_KEY = process.env.JWT_SECRET; 
 
-  return jwt.sign(tokenPayload, JWT_SECRET_KEY, { expiresIn: "3h" });
+  return jwt.sign(tokenPayload, JWT_SECRET_KEY, { expiresIn: "1h" });
 };
 
 

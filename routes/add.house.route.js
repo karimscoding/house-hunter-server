@@ -17,7 +17,7 @@ router.post("/add/houses", addHouse);
 router.get("/get/houses", getAllHouses);
 
 // get house owner
-router.get("/houses", getHousesByOwner);
+router.get("/houses",authMiddleware, getHousesByOwner);
 
 // Update a house by its ID
 router.get("/houses/:id", getHouseById);
@@ -25,6 +25,6 @@ router.get("/houses/:id", getHouseById);
 router.patch("/houses/:id", updateHouse);
 
 // delete a house by its ID
-router.delete("/houses/:id", deleteHouse);
+router.delete("/houses/:id",authMiddleware, deleteHouse);
 
 module.exports = router;
