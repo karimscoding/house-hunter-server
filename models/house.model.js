@@ -45,12 +45,12 @@ const houseSchema = new mongoose.Schema(
       required: true,
     },
     phone: {
-      type: String,
+      type: Number,
       required: true,
       validate: {
         validator: function (value) {
           // Regex to validate Bangladeshi phone number format (e.g., +8801XXXXXXXXX)
-          return /^(\+8801)[0-9]{9}$/.test(value);
+          return /^(8801)[0-9]{8,10}$/.test(value);
         },
         message: "Please provide a valid Bangladeshi phone number",
       },

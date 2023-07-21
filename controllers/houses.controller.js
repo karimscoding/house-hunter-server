@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const House = require("../models/house.model");
 
 const addHouse = async (req, res) => {
@@ -65,7 +66,7 @@ const addHouse = async (req, res) => {
     res.status(201).json({ message: "House added successfully" });
   } catch (error) {
     console.log("Error adding house", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Something wrong with your data." });
   }
 };
 
@@ -84,9 +85,9 @@ const getAllHouses = async (req, res) => {
 const getHousesByOwner = async (req, res) => {
   try {
     const ownerId = req.userId;
-    console.log("owner",ownerId);
+    console.log("owner", ownerId);
 
-    const houses = await House.find({owner: ownerId});
+    const houses = await House.find({ owner: ownerId });
     res.status(200).json(houses);
   } catch (error) {
     console.log("Error fetching houses", error);
@@ -146,4 +147,11 @@ const deleteHouse = async (req, res) => {
   }
 };
 
-module.exports = { addHouse, getAllHouses, getHousesByOwner, getHouseById, updateHouse, deleteHouse };
+module.exports = {
+  addHouse,
+  getAllHouses,
+  getHousesByOwner,
+  getHouseById,
+  updateHouse,
+  deleteHouse,
+};
