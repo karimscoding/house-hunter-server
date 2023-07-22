@@ -32,7 +32,7 @@ const getUserBookings = async (req, res) => {
     if (!userBookings) {
       return res.status(404).json({ message: "Booking not found" });
     }
-    
+
     res.json({ userBookings });
   } catch (error) {
     console.error("Error fetching user bookings:", error);
@@ -40,4 +40,23 @@ const getUserBookings = async (req, res) => {
   }
 };
 
-module.exports = { createBooking, getUserBookings };
+// delete user booking
+const deleteUserBooking = async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+
+    // find the booking by id
+    const booking = await Bookings.findByIdAndDelete(bookingId);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking Not Found" });
+    }
+
+    res.status(201).json( { message: "Booking deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to delete user bookings" });
+  }
+};
+
+module.exports = { createBooking, getUserBookings, deleteUserBooking };
