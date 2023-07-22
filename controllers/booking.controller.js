@@ -1,5 +1,5 @@
 const Bookings = require("../models/booking.model");
-const User = require ("../models/user.model")
+const User = require("../models/user.model");
 
 const createBooking = async (req, res) => {
   try {
@@ -27,18 +27,12 @@ const createBooking = async (req, res) => {
 const getUserBookings = async (req, res) => {
   try {
     const userEmail = req.user.email;
+    const userBookings = await Bookings.find({ email: userEmail });
 
-     // Fetch user by email to get the user's _id
-    const user = await User.find({email: userEmail})
-
-    if(!user){
-      return res.status(404).json({message:"User not found"})
+    if (!userBookings) {
+      return res.status(404).json({ message: "Booking not found" });
     }
-
-    const userBookings = await Bookings.find({ user: user._id }).populate(
-      "house"
-    );
-
+    
     res.json({ userBookings });
   } catch (error) {
     console.error("Error fetching user bookings:", error);
